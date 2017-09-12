@@ -1,0 +1,11 @@
+application: kbase
+version: 1
+runtime: python35
+threadsafe: true
+
+handlers:
+- url: /search|/questions.*
+  script: server.main.app
+- url: /
+  static_files: client/index.html
+  upload: client/index.html

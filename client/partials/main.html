@@ -1,0 +1,13 @@
+<div ng-if="questions">
+  <h2>Results</h2>
+  <dl>
+    <dt ng-repeat-start="q in questions">{{q.q}}</dt>
+    <dd ng-repeat-end>{{q.a}}</dd>
+  </dl>
+  <p>If the results above do not address your question, you may <a href="#!/ask">ask</a>.</p>
+</div>
+<div ng-if="questions">
+  <p>I did not find anything. You may search again or ask the <a href="#!/ask">ask the question</a>.</p>
+</div>
+
+
