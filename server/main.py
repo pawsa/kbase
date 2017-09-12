@@ -6,13 +6,14 @@ import json
 import webapp2
 import questions
 
+
 class QuestionList(webapp2.RequestHandler):
     def get(self):
         self.response.content_type = 'application/json'
         query = self.request.get('q')
+        retlist = questions.db.read(query)
         self.response.write(
-            json.dumps({'questions':
-                        [j.todict() for j in questions.db.read(query)]}))
+            json.dumps({'questions': [j.todict() for j in retlist]}))
 
     def post(self):
         self.response.content_type = 'application/json'
@@ -40,11 +41,12 @@ class Question(webapp2.RequestHandler):
     def patch(self, qid):
         self.response.status = 501
         self.response.write('Please accept regrets')
-        
+
 app = webapp2.WSGIApplication([
     ('/questions', QuestionList),
     ('/questions/(.+)', Question),
 ], debug=True)
+
 
 def main():
     from paste import httpserver

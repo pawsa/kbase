@@ -16,8 +16,10 @@ class Question:
 
     def __repr__(self):
         return '<Q:{}>'.format(re.sub(r'[^- a-zA-Z0-9]', '-', self.question))
+
     def todict(self):
         return {'id': self.id, 'q': self.question, 'a': self.answer}
+
 
 class Db:
     """Question database"""
@@ -62,7 +64,7 @@ class Db:
             question.answer = updates['answer']
 
     def delete(self, qid):
-        with _lock:
+        with self.lock:
             for idx in range(0, len(self.questions)):
                 if self.questions[idx].id == qid:
                     del self.questions[idx]
