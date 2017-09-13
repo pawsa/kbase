@@ -9,23 +9,25 @@ app.factory('kbService', function($rootScope, $http, $q, $log) {
             .then(function(data, status, headers, config) {
                 $rootScope.questions = data;
                 $rootScope.status = '';
-            }));
+            }).catch(function (err) {
+                $rootScope.status = 'Generc error';
+	    }));
 });
 
 
 /** MainCtrl has the ability to search for questions, or ask one */
 app.controller('MainCtrl', function($http, $rootScope, $scope) {
-    console.log('creating search ');
     $scope.search = function () {
-        console.log('search ', $scope.query);
-        ($http.get('questions', {q: $scope.query})
+        ($http.get('questions', {params: {q: $scope.query}})
          .then(function (response) {
              console.log('Got response', response.data);
              $scope.questions = response.data.questions;
              if (!$scope.questions) {
                  $rootScope.status = "No answers found";
              }
-         }));
+         })).catch(function (error) {
+	     $rootScope.status = "Search failed";
+	 });
     }
     $scope.questions = [];
 });
@@ -42,9 +44,9 @@ app.controller('AskCtrl', function($http, $location, $rootScope, $scope) {
                  $rootScope.status = "No answers found";
              }
              $location.path('#!/');
-             console.log('Changed location');
          }).catch(function (err) {
              console.log('err', err);
+	     $rootScope.status = "Error adding the q&a";
          }));
     };
     $scope.questions = [];
